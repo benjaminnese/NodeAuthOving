@@ -22,7 +22,8 @@ passport.use(
     new GoogleStrategy({
         clientID: keys.googleClientID, //nøkkel fra keys.js lagret i keys.ID.. og keys.Secret..
         clientSecret: keys.googleClientSecret,
-        callbackURL: '/auth/google/callback' //ruten som bruker blir sendt til når de får verdifisert innlogg
+        callbackURL: '/auth/google/callback', //ruten som bruker blir sendt til når de får verdifisert innlogg
+        proxy: true   //dealt with it google, om ikke proxy:true så får man http, må ha absolutt filepath for https her
     }, 
     (accessToken, refreshToken, profile, done) => {
         User.findOne({  googleId: profile.id }) //reture løfte
