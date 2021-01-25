@@ -12,8 +12,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done)=> {  //gjør id tilbake til bruker, retunere bruker
-    User.findById(id)
-    .then(user => {
+    User.findById(id).then(user => {
         done(null,user);
     });
 });
@@ -25,21 +24,18 @@ passport.use(
         callbackURL: '/auth/google/callback', //ruten som bruker blir sendt til når de får verdifisert innlogg
         proxy: true   //dealt with it google, om ikke proxy:true så får man http, må ha absolutt filepath for https her
     }, 
-    (accessToken, refreshToken, profile, done) => {
-        User.findOne({  googleId: profile.id }) //reture løfte
-            .then((existingUser)=>{
-                if(existingUser){
-                    //har allerede bruker lagt inn i systemet
-                    done(null, existingUser); //null = ingen feil her, vi er ferdig her har vi brukeren vi har funnet
-                }    
-                else{   
-                    new User({googleId: profile.id}).save()
-                    .then(user => done(null, user));
-                
-                }                                            //profile.id kommer fra google profilen
-            });                                              //.save vil da lagre bruker i databasen, mongoDB
-            
+    async(accessToken, refreshToken, profile, done) => {
+        const existingUser = await User.findOne({  googleId: profile.id })
         
+        if(existingUser){
+            done(null, existingUser); //null = ingen feil her, vi er ferdig her har vi brukeren vi har funnet
+        }    
+        else{   
+            const user = await new User({googleId: profile.id}).save();
+            done(null, user);
+        }                                            //profile.id kommer fra google profilen
+                                                    //.save vil da lagre bruker i databasen, mongoDB
+            
              
     })       
 );

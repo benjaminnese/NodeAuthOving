@@ -9,11 +9,19 @@
   },
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "server": "nodemon index.js",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "//ScriptKommentarer": {
+    "Linje1": "script blir brukt ved start av programmet",
+    "Linje2": "--prefix client, vil flytte peker på kode kjøring til client mappen",
+    "Linje3": "concurrently så vil den kjører begge kodene samtidig, skråstrek unslipper dobbelfnutt"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "concurrently": "^5.3.0",
     "cookie-session": "^1.4.0",
     "express": "^4.17.1",
     "mongoose": "^5.11.13",

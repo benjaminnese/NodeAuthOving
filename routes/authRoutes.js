@@ -1,6 +1,6 @@
 const passport = require('passport');
 
-module.exports = (app) => {
+module.exports = app => {
     app.get(
         '/auth/google', 
         passport.authenticate('google', { //'google', GoogleStrategy idenfiserer seg til passport som 'google' under the hood 
@@ -18,4 +18,6 @@ module.exports = (app) => {
       res.send(req.user);
     });
 
-}
+};
+
+

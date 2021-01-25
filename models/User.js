@@ -4,7 +4,8 @@ const {Schema} = mongoose;
 
 
 const userSchema = new Schema({
-    googleId: String
+    googleId: String,
+    brukernavn: String
 });
 
 mongoose.model('users', userSchema); //vi forteller moongose vi vil lage en ny collection 
