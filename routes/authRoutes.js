@@ -8,11 +8,15 @@ module.exports = app => {
         })
     );
 
-    app.get('/auth/google/callback', passport.authenticate('google')); //google har sendt tilbake info om bruker
-                                                                   //passport ser dette og bruker den info til lage profil
+    app.get('/auth/google/callback', //google har sendt tilbake info om bruker
+      passport.authenticate('google'), //passport ser dette og bruker den info til lage profil
+      (req, res) => {                 //sender videre til surveys
+        res.redirect('/surveys')
+      }
+    );                                                 
     app.get('/api/logout', (req, res)=>{
         req.logout();
-        res.send(req.user);
+        res.redirect('/');
     })
     app.get('/api/current_user', (req, res) => {
       res.send(req.user);
